@@ -1,58 +1,17 @@
-"use strict";
 (() => {
-  var __create = Object.create;
   var __defProp = Object.defineProperty;
-  var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-  var __getOwnPropNames = Object.getOwnPropertyNames;
-  var __getProtoOf = Object.getPrototypeOf;
-  var __hasOwnProp = Object.prototype.hasOwnProperty;
   var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-  var __esm = (fn, res) => function __init() {
-    return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
-  };
-  var __commonJS = (cb, mod) => function __require() {
-    return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-  };
-  var __copyProps = (to, from, except, desc) => {
-    if (from && typeof from === "object" || typeof from === "function") {
-      for (let key of __getOwnPropNames(from))
-        if (!__hasOwnProp.call(to, key) && key !== except)
-          __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-    }
-    return to;
-  };
-  var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-    // If the importer is in node compatibility mode or this is not an ESM
-    // file that has been converted to a CommonJS file using a Babel-
-    // compatible transform (i.e. "__esModule" has not been set), then set
-    // "default" to the CommonJS "module.exports" for node compatibility.
-    isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-    mod
-  ));
-
-  // wrangler-modules-watch:wrangler:modules-watch
-  var import_middleware_insertion_facade;
-  var init_wrangler_modules_watch = __esm({
-    "wrangler-modules-watch:wrangler:modules-watch"() {
-      import_middleware_insertion_facade = __toESM(require_middleware_insertion_facade());
-      init_modules_watch_stub();
-    }
-  });
-
-  // ../../../usr/local/lib/node_modules/wrangler/templates/modules-watch-stub.js
-  var init_modules_watch_stub = __esm({
-    "../../../usr/local/lib/node_modules/wrangler/templates/modules-watch-stub.js"() {
-      init_wrangler_modules_watch();
-    }
-  });
 
   // ../../../usr/local/lib/node_modules/wrangler/templates/middleware/common.ts
+  var __facade_middleware__ = [];
   function __facade_register__(...args) {
     __facade_middleware__.push(...args.flat());
   }
+  __name(__facade_register__, "__facade_register__");
   function __facade_registerInternal__(...args) {
     __facade_middleware__.unshift(...args.flat());
   }
+  __name(__facade_registerInternal__, "__facade_registerInternal__");
   function __facade_invokeChain__(request, env, ctx, dispatch, middlewareChain) {
     const [head, ...tail] = middlewareChain;
     const middlewareCtx = {
@@ -63,235 +22,211 @@
     };
     return head(request, env, ctx, middlewareCtx);
   }
+  __name(__facade_invokeChain__, "__facade_invokeChain__");
   function __facade_invoke__(request, env, ctx, dispatch, finalMiddleware) {
     return __facade_invokeChain__(request, env, ctx, dispatch, [
       ...__facade_middleware__,
       finalMiddleware
     ]);
   }
-  var import_middleware_insertion_facade2, __facade_middleware__;
-  var init_common = __esm({
-    "../../../usr/local/lib/node_modules/wrangler/templates/middleware/common.ts"() {
-      import_middleware_insertion_facade2 = __toESM(require_middleware_insertion_facade());
-      init_modules_watch_stub();
-      __facade_middleware__ = [];
-      __name(__facade_register__, "__facade_register__");
-      __name(__facade_registerInternal__, "__facade_registerInternal__");
-      __name(__facade_invokeChain__, "__facade_invokeChain__");
-      __name(__facade_invoke__, "__facade_invoke__");
-    }
-  });
+  __name(__facade_invoke__, "__facade_invoke__");
 
   // ../../../usr/local/lib/node_modules/wrangler/templates/middleware/loader-sw.ts
+  var __FACADE_EVENT_TARGET__;
+  if (globalThis.MINIFLARE) {
+    __FACADE_EVENT_TARGET__ = new (Object.getPrototypeOf(WorkerGlobalScope))();
+  } else {
+    __FACADE_EVENT_TARGET__ = new EventTarget();
+  }
   function __facade_isSpecialEvent__(type) {
     return type === "fetch" || type === "scheduled";
   }
-  var import_middleware_insertion_facade3, __FACADE_EVENT_TARGET__, __facade__originalAddEventListener__, __facade__originalRemoveEventListener__, __facade__originalDispatchEvent__, __facade_waitUntil__, __facade_response__, __facade_dispatched__, __Facade_ExtendableEvent__, __Facade_FetchEvent__, __Facade_ScheduledEvent__;
-  var init_loader_sw = __esm({
-    "../../../usr/local/lib/node_modules/wrangler/templates/middleware/loader-sw.ts"() {
-      import_middleware_insertion_facade3 = __toESM(require_middleware_insertion_facade());
-      init_modules_watch_stub();
-      init_common();
-      if (globalThis.MINIFLARE) {
-        __FACADE_EVENT_TARGET__ = new (Object.getPrototypeOf(WorkerGlobalScope))();
-      } else {
-        __FACADE_EVENT_TARGET__ = new EventTarget();
+  __name(__facade_isSpecialEvent__, "__facade_isSpecialEvent__");
+  var __facade__originalAddEventListener__ = globalThis.addEventListener;
+  var __facade__originalRemoveEventListener__ = globalThis.removeEventListener;
+  var __facade__originalDispatchEvent__ = globalThis.dispatchEvent;
+  globalThis.addEventListener = function(type, listener, options) {
+    if (__facade_isSpecialEvent__(type)) {
+      __FACADE_EVENT_TARGET__.addEventListener(
+        type,
+        listener,
+        options
+      );
+    } else {
+      __facade__originalAddEventListener__(type, listener, options);
+    }
+  };
+  globalThis.removeEventListener = function(type, listener, options) {
+    if (__facade_isSpecialEvent__(type)) {
+      __FACADE_EVENT_TARGET__.removeEventListener(
+        type,
+        listener,
+        options
+      );
+    } else {
+      __facade__originalRemoveEventListener__(type, listener, options);
+    }
+  };
+  globalThis.dispatchEvent = function(event) {
+    if (__facade_isSpecialEvent__(event.type)) {
+      return __FACADE_EVENT_TARGET__.dispatchEvent(event);
+    } else {
+      return __facade__originalDispatchEvent__(event);
+    }
+  };
+  globalThis.addMiddleware = __facade_register__;
+  globalThis.addMiddlewareInternal = __facade_registerInternal__;
+  var __facade_waitUntil__ = Symbol("__facade_waitUntil__");
+  var __facade_response__ = Symbol("__facade_response__");
+  var __facade_dispatched__ = Symbol("__facade_dispatched__");
+  var __Facade_ExtendableEvent__ = class ___Facade_ExtendableEvent__ extends Event {
+    static {
+      __name(this, "__Facade_ExtendableEvent__");
+    }
+    [__facade_waitUntil__] = [];
+    waitUntil(promise) {
+      if (!(this instanceof ___Facade_ExtendableEvent__)) {
+        throw new TypeError("Illegal invocation");
       }
-      __name(__facade_isSpecialEvent__, "__facade_isSpecialEvent__");
-      __facade__originalAddEventListener__ = globalThis.addEventListener;
-      __facade__originalRemoveEventListener__ = globalThis.removeEventListener;
-      __facade__originalDispatchEvent__ = globalThis.dispatchEvent;
-      globalThis.addEventListener = function(type, listener, options) {
-        if (__facade_isSpecialEvent__(type)) {
-          __FACADE_EVENT_TARGET__.addEventListener(
-            type,
-            listener,
-            options
-          );
-        } else {
-          __facade__originalAddEventListener__(type, listener, options);
-        }
-      };
-      globalThis.removeEventListener = function(type, listener, options) {
-        if (__facade_isSpecialEvent__(type)) {
-          __FACADE_EVENT_TARGET__.removeEventListener(
-            type,
-            listener,
-            options
-          );
-        } else {
-          __facade__originalRemoveEventListener__(type, listener, options);
-        }
-      };
-      globalThis.dispatchEvent = function(event) {
-        if (__facade_isSpecialEvent__(event.type)) {
-          return __FACADE_EVENT_TARGET__.dispatchEvent(event);
-        } else {
-          return __facade__originalDispatchEvent__(event);
-        }
-      };
-      globalThis.addMiddleware = __facade_register__;
-      globalThis.addMiddlewareInternal = __facade_registerInternal__;
-      __facade_waitUntil__ = Symbol("__facade_waitUntil__");
-      __facade_response__ = Symbol("__facade_response__");
-      __facade_dispatched__ = Symbol("__facade_dispatched__");
-      __Facade_ExtendableEvent__ = class ___Facade_ExtendableEvent__ extends Event {
-        static {
-          __name(this, "__Facade_ExtendableEvent__");
-        }
-        [__facade_waitUntil__] = [];
-        waitUntil(promise) {
-          if (!(this instanceof ___Facade_ExtendableEvent__)) {
-            throw new TypeError("Illegal invocation");
-          }
-          this[__facade_waitUntil__].push(promise);
-        }
-      };
-      __Facade_FetchEvent__ = class ___Facade_FetchEvent__ extends __Facade_ExtendableEvent__ {
-        static {
-          __name(this, "__Facade_FetchEvent__");
-        }
-        #request;
-        #passThroughOnException;
-        [__facade_response__];
-        [__facade_dispatched__] = false;
-        constructor(type, init) {
-          super(type);
-          this.#request = init.request;
-          this.#passThroughOnException = init.passThroughOnException;
-        }
-        get request() {
-          return this.#request;
-        }
-        respondWith(response) {
-          if (!(this instanceof ___Facade_FetchEvent__)) {
-            throw new TypeError("Illegal invocation");
-          }
-          if (this[__facade_response__] !== void 0) {
-            throw new DOMException(
-              "FetchEvent.respondWith() has already been called; it can only be called once.",
-              "InvalidStateError"
-            );
-          }
-          if (this[__facade_dispatched__]) {
-            throw new DOMException(
-              "Too late to call FetchEvent.respondWith(). It must be called synchronously in the event handler.",
-              "InvalidStateError"
-            );
-          }
-          this.stopImmediatePropagation();
-          this[__facade_response__] = response;
-        }
-        passThroughOnException() {
-          if (!(this instanceof ___Facade_FetchEvent__)) {
-            throw new TypeError("Illegal invocation");
-          }
-          this.#passThroughOnException();
-        }
-      };
-      __Facade_ScheduledEvent__ = class ___Facade_ScheduledEvent__ extends __Facade_ExtendableEvent__ {
-        static {
-          __name(this, "__Facade_ScheduledEvent__");
-        }
-        #scheduledTime;
-        #cron;
-        #noRetry;
-        constructor(type, init) {
-          super(type);
-          this.#scheduledTime = init.scheduledTime;
-          this.#cron = init.cron;
-          this.#noRetry = init.noRetry;
-        }
-        get scheduledTime() {
-          return this.#scheduledTime;
-        }
-        get cron() {
-          return this.#cron;
-        }
-        noRetry() {
-          if (!(this instanceof ___Facade_ScheduledEvent__)) {
-            throw new TypeError("Illegal invocation");
-          }
-          this.#noRetry();
-        }
-      };
-      __facade__originalAddEventListener__("fetch", (event) => {
-        const ctx = {
-          waitUntil: event.waitUntil.bind(event),
-          passThroughOnException: event.passThroughOnException.bind(event)
-        };
-        const __facade_sw_dispatch__ = /* @__PURE__ */ __name(function(type, init) {
-          if (type === "scheduled") {
-            const facadeEvent = new __Facade_ScheduledEvent__("scheduled", {
-              scheduledTime: Date.now(),
-              cron: init.cron ?? "",
-              noRetry() {
-              }
-            });
-            __FACADE_EVENT_TARGET__.dispatchEvent(facadeEvent);
-            event.waitUntil(Promise.all(facadeEvent[__facade_waitUntil__]));
-          }
-        }, "__facade_sw_dispatch__");
-        const __facade_sw_fetch__ = /* @__PURE__ */ __name(function(request, _env, ctx2) {
-          const facadeEvent = new __Facade_FetchEvent__("fetch", {
-            request,
-            passThroughOnException: ctx2.passThroughOnException
-          });
-          __FACADE_EVENT_TARGET__.dispatchEvent(facadeEvent);
-          facadeEvent[__facade_dispatched__] = true;
-          event.waitUntil(Promise.all(facadeEvent[__facade_waitUntil__]));
-          const response = facadeEvent[__facade_response__];
-          if (response === void 0) {
-            throw new Error("No response!");
-          }
-          return response;
-        }, "__facade_sw_fetch__");
-        event.respondWith(
-          __facade_invoke__(
-            event.request,
-            globalThis,
-            ctx,
-            __facade_sw_dispatch__,
-            __facade_sw_fetch__
-          )
+      this[__facade_waitUntil__].push(promise);
+    }
+  };
+  var __Facade_FetchEvent__ = class ___Facade_FetchEvent__ extends __Facade_ExtendableEvent__ {
+    static {
+      __name(this, "__Facade_FetchEvent__");
+    }
+    #request;
+    #passThroughOnException;
+    [__facade_response__];
+    [__facade_dispatched__] = false;
+    constructor(type, init) {
+      super(type);
+      this.#request = init.request;
+      this.#passThroughOnException = init.passThroughOnException;
+    }
+    get request() {
+      return this.#request;
+    }
+    respondWith(response) {
+      if (!(this instanceof ___Facade_FetchEvent__)) {
+        throw new TypeError("Illegal invocation");
+      }
+      if (this[__facade_response__] !== void 0) {
+        throw new DOMException(
+          "FetchEvent.respondWith() has already been called; it can only be called once.",
+          "InvalidStateError"
         );
-      });
-      __facade__originalAddEventListener__("scheduled", (event) => {
+      }
+      if (this[__facade_dispatched__]) {
+        throw new DOMException(
+          "Too late to call FetchEvent.respondWith(). It must be called synchronously in the event handler.",
+          "InvalidStateError"
+        );
+      }
+      this.stopImmediatePropagation();
+      this[__facade_response__] = response;
+    }
+    passThroughOnException() {
+      if (!(this instanceof ___Facade_FetchEvent__)) {
+        throw new TypeError("Illegal invocation");
+      }
+      this.#passThroughOnException();
+    }
+  };
+  var __Facade_ScheduledEvent__ = class ___Facade_ScheduledEvent__ extends __Facade_ExtendableEvent__ {
+    static {
+      __name(this, "__Facade_ScheduledEvent__");
+    }
+    #scheduledTime;
+    #cron;
+    #noRetry;
+    constructor(type, init) {
+      super(type);
+      this.#scheduledTime = init.scheduledTime;
+      this.#cron = init.cron;
+      this.#noRetry = init.noRetry;
+    }
+    get scheduledTime() {
+      return this.#scheduledTime;
+    }
+    get cron() {
+      return this.#cron;
+    }
+    noRetry() {
+      if (!(this instanceof ___Facade_ScheduledEvent__)) {
+        throw new TypeError("Illegal invocation");
+      }
+      this.#noRetry();
+    }
+  };
+  __facade__originalAddEventListener__("fetch", (event) => {
+    const ctx = {
+      waitUntil: event.waitUntil.bind(event),
+      passThroughOnException: event.passThroughOnException.bind(event)
+    };
+    const __facade_sw_dispatch__ = /* @__PURE__ */ __name(function(type, init) {
+      if (type === "scheduled") {
         const facadeEvent = new __Facade_ScheduledEvent__("scheduled", {
-          scheduledTime: event.scheduledTime,
-          cron: event.cron,
-          noRetry: event.noRetry.bind(event)
+          scheduledTime: Date.now(),
+          cron: init.cron ?? "",
+          noRetry() {
+          }
         });
         __FACADE_EVENT_TARGET__.dispatchEvent(facadeEvent);
         event.waitUntil(Promise.all(facadeEvent[__facade_waitUntil__]));
+      }
+    }, "__facade_sw_dispatch__");
+    const __facade_sw_fetch__ = /* @__PURE__ */ __name(function(request, _env, ctx2) {
+      const facadeEvent = new __Facade_FetchEvent__("fetch", {
+        request,
+        passThroughOnException: ctx2.passThroughOnException
       });
-    }
+      __FACADE_EVENT_TARGET__.dispatchEvent(facadeEvent);
+      facadeEvent[__facade_dispatched__] = true;
+      event.waitUntil(Promise.all(facadeEvent[__facade_waitUntil__]));
+      const response = facadeEvent[__facade_response__];
+      if (response === void 0) {
+        throw new Error("No response!");
+      }
+      return response;
+    }, "__facade_sw_fetch__");
+    event.respondWith(
+      __facade_invoke__(
+        event.request,
+        globalThis,
+        ctx,
+        __facade_sw_dispatch__,
+        __facade_sw_fetch__
+      )
+    );
+  });
+  __facade__originalAddEventListener__("scheduled", (event) => {
+    const facadeEvent = new __Facade_ScheduledEvent__("scheduled", {
+      scheduledTime: event.scheduledTime,
+      cron: event.cron,
+      noRetry: event.noRetry.bind(event)
+    });
+    __FACADE_EVENT_TARGET__.dispatchEvent(facadeEvent);
+    event.waitUntil(Promise.all(facadeEvent[__facade_waitUntil__]));
   });
 
   // ../../../usr/local/lib/node_modules/wrangler/templates/middleware/middleware-ensure-req-body-drained.ts
-  var import_middleware_insertion_facade4, drainBody, middleware_ensure_req_body_drained_default;
-  var init_middleware_ensure_req_body_drained = __esm({
-    "../../../usr/local/lib/node_modules/wrangler/templates/middleware/middleware-ensure-req-body-drained.ts"() {
-      import_middleware_insertion_facade4 = __toESM(require_middleware_insertion_facade());
-      init_modules_watch_stub();
-      drainBody = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx) => {
-        try {
-          return await middlewareCtx.next(request, env);
-        } finally {
-          try {
-            if (request.body !== null && !request.bodyUsed) {
-              const reader = request.body.getReader();
-              while (!(await reader.read()).done) {
-              }
-            }
-          } catch (e) {
-            console.error("Failed to drain the unused request body.", e);
+  var drainBody = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx) => {
+    try {
+      return await middlewareCtx.next(request, env);
+    } finally {
+      try {
+        if (request.body !== null && !request.bodyUsed) {
+          const reader = request.body.getReader();
+          while (!(await reader.read()).done) {
           }
         }
-      }, "drainBody");
-      middleware_ensure_req_body_drained_default = drainBody;
+      } catch (e) {
+        console.error("Failed to drain the unused request body.", e);
+      }
     }
-  });
+  }, "drainBody");
+  var middleware_ensure_req_body_drained_default = drainBody;
 
   // ../../../usr/local/lib/node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts
   function reduceError(e) {
@@ -302,37 +237,22 @@
       cause: e?.cause === void 0 ? void 0 : reduceError(e.cause)
     };
   }
-  var import_middleware_insertion_facade5, jsonError, middleware_miniflare3_json_error_default;
-  var init_middleware_miniflare3_json_error = __esm({
-    "../../../usr/local/lib/node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts"() {
-      import_middleware_insertion_facade5 = __toESM(require_middleware_insertion_facade());
-      init_modules_watch_stub();
-      __name(reduceError, "reduceError");
-      jsonError = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx) => {
-        try {
-          return await middlewareCtx.next(request, env);
-        } catch (e) {
-          const error = reduceError(e);
-          return Response.json(error, {
-            status: 500,
-            headers: { "MF-Experimental-Error-Stack": "true" }
-          });
-        }
-      }, "jsonError");
-      middleware_miniflare3_json_error_default = jsonError;
+  __name(reduceError, "reduceError");
+  var jsonError = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx) => {
+    try {
+      return await middlewareCtx.next(request, env);
+    } catch (e) {
+      const error = reduceError(e);
+      return Response.json(error, {
+        status: 500,
+        headers: { "MF-Experimental-Error-Stack": "true" }
+      });
     }
-  });
+  }, "jsonError");
+  var middleware_miniflare3_json_error_default = jsonError;
 
   // .wrangler/tmp/bundle-2eZkv2/middleware-insertion-facade.js
-  var require_middleware_insertion_facade = __commonJS({
-    ".wrangler/tmp/bundle-2eZkv2/middleware-insertion-facade.js"() {
-      "use strict";
-      init_loader_sw();
-      init_middleware_ensure_req_body_drained();
-      init_middleware_miniflare3_json_error();
-      __facade_registerInternal__([middleware_ensure_req_body_drained_default, middleware_miniflare3_json_error_default]);
-    }
-  });
+  __facade_registerInternal__([middleware_ensure_req_body_drained_default, middleware_miniflare3_json_error_default]);
 
   // backend/routes.ts
   async function handleRequest(request) {
@@ -363,27 +283,11 @@
     }
     return new Response("Not found", { status: 404 });
   }
-  var import_middleware_insertion_facade6;
-  var init_routes = __esm({
-    "backend/routes.ts"() {
-      "use strict";
-      import_middleware_insertion_facade6 = __toESM(require_middleware_insertion_facade());
-      init_modules_watch_stub();
-      __name(handleRequest, "handleRequest");
-    }
-  });
+  __name(handleRequest, "handleRequest");
 
   // backend/index.ts
-  var require_index = __commonJS({
-    "backend/index.ts"() {
-      var import_middleware_insertion_facade7 = __toESM(require_middleware_insertion_facade());
-      init_modules_watch_stub();
-      init_routes();
-      addEventListener("fetch", (event) => {
-        event.respondWith(handleRequest(event.request));
-      });
-    }
+  addEventListener("fetch", (event) => {
+    event.respondWith(handleRequest(event.request));
   });
-  require_index();
 })();
 //# sourceMappingURL=index.js.map
