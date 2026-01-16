@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillSync - AI-Powered Job Matching</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #E85A2B;
+            --primary-light: #FF8C61;
+            --secondary: #004E89;
+            --secondary-dark: #003A64;
+            --accent: #FFB800;
+            --success: #00C896;
+            --danger: #FF4757;
+            --dark: #1A1A2E;
+            --dark-alt: #16213E;
+            --light: #F8F9FA;
+            --gray: #64748B;
+            --gray-light: #E2E8F0;
+            --white: #FFFFFF;
+            --gradient-primary: linear-gradient(135deg, #FF6B35 0%, #FF8C61 100%);
+            --gradient-secondary: linear-gradient(135deg, #004E89 0%, #006BB8 100%);
+            --gradient-bg: linear-gradient(135deg, #1A1A2E 0%, #16213E 50%, #0F3460 100%);
+            --border-radius: 16px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gradient-bg);
+            min-height: 100vh;
+            line-height: 1.6;
+            color: var(--dark);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 78, 137, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 20%, rgba(255, 184, 0, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 107, 53, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 1.25rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--primary);
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .nav {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--gray-light);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        .main {
+            padding: 3rem 0;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 2rem 0;
+        }
+
+        .hero-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFFFFF 0%, #FFB800 50%, #FF6B35 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 650px;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 107, 53, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .card-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.01em;
+        }
+
+        .card-header h2 i {
+            margin-right: 0.75rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-header p {
+            color: var(--gray);
+            font-size: 1.05rem;
+        }
+
+        /* Input Methods */
+        .input-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .input-method {
+            position: relative;
+        }
+
+        /* Voice Recorder */
+        .voice-recorder {
+            text-align: center;
+            padding: 2.5rem;
+            border: 3px dashed var(--gray-light);
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.02) 0%, rgba(0, 78, 137, 0.02) 100%);
+        }
+
+        .voice-recorder:hover {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(0, 78, 137, 0.05) 100%);
+        }
+
+        .record-btn {
+            background: var(--gradient-primary);
+            color: var(--white);
+            border: none;
+            border-radius: 50%;
+            width: 90px;
+            height: 90px;
+            font-size: 1.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .record-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+        }
+
+        .record-btn.recording {
+            background: linear-gradient(135deg, #FF4757 0%, #FF6B6B 100%);
+            animation: pulse 1.5s infinite;
+        }
+
+        #recordText {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .recording-status {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            color: var(--danger);
+            font-weight: 600;
+            margin-top: 1.5rem;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .recording-status.active {
+            display: flex;
+        }
+
+        .pulse {
+            width: 14px;
+            height: 14px;
+            background: var(--danger);
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+
+        /* Audio Visualizer */
+        .audio-visualizer {
+            display: none;
+            justify-content: center;
+            align-items: end;
+            gap: 5px;
+            height: 50px;
+            margin-top: 1.5rem;
+        }
+
+        .audio-visualizer.active {
+            display: flex;
+        }
+
+        .bar {
+            width: 5px;
+            background: var(--gradient-primary);
+            border-radius: 3px;
+            animation: audioBar 0.8s infinite ease-in-out;
+        }
+
+        .bar:nth-child(2) { animation-delay: 0.1s; }
+        .bar:nth-child(3) { animation-delay: 0.2s; }
+        .bar:nth-child(4) { animation-delay: 0.3s; }
+        .bar:nth-child(5) { animation-delay: 0.4s; }
+
+        /* Divider */
+        .divider {
+            text-align: center;
+            position: relative;
+            color: var(--gray);
+            font-weight: 600;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gray-light), transparent);
+            z-index: 1;
+        }
+
+        .divider span {
+            background: var(--white);
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Text Input */
+        .skills-input {
+            width: 100%;
+            padding: 1.25rem;
+            border: 2px solid var(--gray-light);
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background: rgba(248, 249, 250, 0.5);
+        }
+
+        .skills-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
+            background: var(--white);
+        }
+
+        /* Buttons */
+        .submit-btn, .primary-btn, .secondary-btn {
+            padding: 1.25rem 2.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .submit-btn, .primary-btn {
+            background: var(--gradient-primary);
+            color: var(--white);
+            width: 100%;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .submit-btn:hover, .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+        }
+
+        .secondary-btn {
+            background: var(--white);
+            color: var(--dark);
+            border: 2px solid var(--gray-light);
+        }
+
+        .secondary-btn:hover {
+            background: var(--light);
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .skill-item {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(0, 78, 137, 0.05) 100%);
+            border: 2px solid var(--gray-light);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .skill-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .skill-name {
+            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--dark);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .skill-confidence {
+            color: var(--gray);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .confidence-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--gray-light);
+            border-radius: 4px;
+            margin-top: 0.75rem;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        /* Jobs Container */
+        .jobs-container {
+            display: grid;
+            gap: 1.75rem;
+        }
+
+        .job-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(248, 249, 250, 1) 100%);
+            border: 2px solid var(--gray-light);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .job-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gradient-primary);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .job-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .job-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.25rem;
+        }
+
+        .job-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .job-company {
+            color: var(--gray);
+            font-size: 1.05rem;
+            font-weight: 500;
+        }
+
+        .match-score {
+            background: var(--gradient-primary);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .job-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .job-detail {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        .job-detail i {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .job-description {
+            color: var(--gray);
+            margin-bottom: 1.25rem;
+            line-height: 1.7;
+        }
+
+        .job-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .job-skill {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(0, 78, 137, 0.1) 100%);
+            color: var(--secondary);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1.25rem;
+            justify-content: center;
+            margin-top: 2.5rem;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .loading-content h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--white);
+            font-size: 2.25rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .loading-content p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .spinner {
+            width: 70px;
+            height: 70px;
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            border-top: 5px solid var(--primary);
+            border-right: 5px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 2.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(20px);
+            text-align: center;
+            padding: 2.5rem 0;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255, 107, 53, 0.2);
+        }
+
+        .footer p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes audioBar {
+            0%, 100% { height: 12px; }
+            50% { height: 35px; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container { padding: 0 1rem; }
+            
+            .hero-title {
+                font-size: 2.25rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.05rem;
+            }
+            
+            .card {
+                padding: 1.75rem;
+            }
+            
+            .nav {
+                display: none;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .job-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .match-score {
+                align-self: flex-start;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .input-methods {
+                flex-direction: row;
+                align-items: stretch;
+            }
+            
+            .input-method {
+                flex: 1;
+            }
+            
+            .divider {
+                align-self: center;
+                writing-mode: vertical-lr;
+                min-height: 120px;
+                display: flex;
+                align-items: center;
+                margin: 0 1.5rem;
+            }
+            
+            .divider::before {
+                width: 2px;
+                height: 100%;
+                top: 0;
+                left: 50%;
+                right: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-sync-alt"></i>
+                <span>SkillSync</span>
+            </div>
+            <nav class="nav">
+                <a href="#" class="nav-link">Dashboard</a>
+                <a href="#" class="nav-link">Profile</a>
+                <a href="#" class="nav-link">Help</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">Find Your Perfect Job Match</h1>
+                    <p class="hero-subtitle">Tell us about your skills and experience - we'll match you with the best opportunities using AI</p>
+                </div>
+            </section>
+
+            <!-- Onboarding Section -->
+            <section class="onboarding" id="onboardingSection">
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-user-plus"></i> Share Your Skills</h2>
+                        <p>Choose how you'd like to tell us about your experience</p>
+                    </div>
+                    
+                    <div class="input-methods">
+                        <!-- Voice Input -->
+                        <div class="input-method">
+                            <div class="voice-recorder" id="voiceRecorder">
+                                <button class="record-btn" id="recordBtn">
+                                    <i class="fas fa-microphone" id="micIcon"></i>
+                                    <span id="recordText">Start Recording</span>
+                                </button>
+                                <div class="recording-status" id="recordingStatus">
+                                    <div class="pulse"></div>
+                                    <span>Recording... Speak about your skills and experience</span>
+                                </div>
+                                <div class="audio-visualizer" id="audioVisualizer">
+                                    <div class="bar"></div>
+                                    <div class="bar"></div>
+                                    <div class="bar"></div>
+                                    <div class="bar"></div>
+                                    <div class="bar"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="divider">
+                            <span>or</span>
+                        </div>
+
+                        <!-- Text Input -->
+                        <div class="input-method">
+                            <textarea 
+                                id="skillsText" 
+                                class="skills-input" 
+                                placeholder="Tell us about your skills, experience, and what type of work you're looking for...
+
+Example: I have 5 years of experience in web development, specializing in React and Node.js. I've worked on e-commerce platforms and have strong skills in database design and API development. I'm looking for remote opportunities in tech startups."
+                                rows="6"
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <button class="submit-btn" id="submitBtn">
+                        <i class="fas fa-magic"></i>
+                        Analyze My Skills
+                    </button>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results" id="resultsSection" style="display: none;">
+                <!-- Skills Analysis -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-brain"></i> Your Skills Analysis</h2>
+                        <p>AI-powered analysis of your capabilities</p>
+                    </div>
+                    <div class="skills-grid" id="skillsGrid">
+                        <!-- Skills will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Job Matches -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-briefcase"></i> Perfect Job Matches</h2>
+                        <p>Opportunities tailored to your skills</p>
+                    </div>
+                    <div class="jobs-container" id="jobsContainer">
+                        <!-- Jobs will be populated here -->
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="secondary-btn" id="tryAgainBtn">
+                        <i class="fas fa-redo"></i> Try Different Skills
+                    </button>
+                    <button class="primary-btn" id="saveProfileBtn">
+                        <i class="fas fa-save"></i> Save My Profile
+                    </button>
+                </div>
+            </section>
+
+            <!-- Loading Section -->
+            <section class="loading" id="loadingSection" style="display: none;">
+                <div class="loading-content">
+                    <div class="spinner"></div>
+                    <h3>Analyzing Your Skills...</h3>
+                    <p id="loadingText">Processing your information with AI</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 SkillSync. Powered by AI for better job matching.</p>
+        </div>
+    </footer>
+
+    <script>
+        class SkillSyncApp {
+            constructor() {
+                this.isRecording = false;
+                this.mediaRecorder = null;
+                this.audioChunks = [];
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.initializeAudio();
+            }
+
+            bindEvents() {
+                document.getElementById('recordBtn').addEventListener('click', () => this.toggleRecording());
+                document.getElementById('submitBtn').addEventListener('click', () => this.handleSubmit());
+                document.getElementById('tryAgainBtn').addEventListener('click', () => this.resetForm());
+                document.getElementById('saveProfileBtn').addEventListener('click', () => this.saveProfile());
+            }
+
+            async initializeAudio() {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    this.mediaRecorder = new MediaRecorder(stream);
+                    
+                    this.mediaRecorder.ondataavailable = (event) => {
+                        this.audioChunks.push(event.data);
+                    };
+                    
+                    this.mediaRecorder.onstop = () => {
+                        const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+                        this.audioChunks = [];
+                        this.processAudio(audioBlob);
+                    };
+                } catch (error) {
+                    console.log('Audio not available:', error);
+                }
+            }
+
+            toggleRecording() {
+                if (!this.mediaRecorder) {
+                    this.showToast('Microphone not available. Please use text input.', 'error');
+                    return;
+                }
+
+                if (this.isRecording) {
+                    this.stopRecording();
+                } else {
+                    this.startRecording();
+                }
+            }
+
+            startRecording() {
+                this.isRecording = true;
+                this.mediaRecorder.start();
+                
+                const recordBtn = document.getElementById('recordBtn');
+                const micIcon = document.getElementById('micIcon');
+                const recordText = document.getElementById('recordText');
+                const recordingStatus = document.getElementById('recordingStatus');
+                const audioVisualizer = document.getElementById('audioVisualizer');
+                
+                recordBtn.classList.add('recording');
+                micIcon.className = 'fas fa-stop';
+                recordText.textContent = 'Stop Recording';
+                recordingStatus.classList.add('active');
+                audioVisualizer.classList.add('active');
+                
+                document.getElementById('skillsText').value = '';
+            }
+
+            stopRecording() {
+                this.isRecording = false;
+                this.mediaRecorder.stop();
+                
+                const recordBtn = document.getElementById('recordBtn');
+                const micIcon = document.getElementById('micIcon');
+                const recordText = document.getElementById('recordText');
+                const recordingStatus = document.getElementById('recordingStatus');
+                const audioVisualizer = document.getElementById('audioVisualizer');
+                
+                recordBtn.classList.remove('recording');
+                micIcon.className = 'fas fa-microphone';
+                recordText.textContent = 'Start Recording';
+                recordingStatus.classList.remove('active');
+                audioVisualizer.classList.remove('active');
+            }
+
+            async processAudio(audioBlob) {
+                this.showToast('Audio recorded successfully!', 'success');
+            }
+
+            async handleSubmit() {
+                const textInput = document.getElementById('skillsText').value.trim();
+                
+                if (!textInput && !this.audioChunks.length) {
+                    this.showToast('Please provide your skills via voice or text input.', 'error');
+                    return;
+                }
+                
+                this.showLoading();
+                
+                try {
+                    await this.delay(2000);
+                    
+                    const skillsData = textInput || this.generateDemoText();
+                    
+                    const skills = await this.analyzeSkills(skillsData);
+                    const jobs = await this.matchJobs(skills);
+                    
+                    this.displayResults(skills, jobs);
+                    
+                } catch (error) {
+                    console.error('Error processing skills:', error);
+                    this.showToast('Error processing your skills. Please try again.', 'error');
+                    this.hideLoading();
+                }
+            }
+
+            async analyzeSkills(inputText) {
+                this.updateLoadingText('Analyzing your skills with AI...');
+                await this.delay(1500);
+                
+                const skillKeywords = {
+                    'javascript': { confidence: 85, category: 'Programming' },
+                    'react': { confidence: 80, category: 'Frontend' },
+                    'node': { confidence: 75, category: 'Backend' },
+                    'python': { confidence: 70, category: 'Programming' },
+                    'sql': { confidence: 65, category: 'Database' },
+                    'aws': { confidence: 60, category: 'Cloud' },
+                    'docker': { confidence: 55, category: 'DevOps' },
+                    'git': { confidence: 90, category: 'Tools' },
+                    'api': { confidence: 70, category: 'Backend' },
+                    'database': { confidence: 65, category: 'Database' },
+                    'web development': { confidence: 85, category: 'Programming' },
+                    'frontend': { confidence: 80, category: 'Frontend' },
+                    'backend': { confidence: 75, category: 'Backend' },
+                    'full stack': { confidence: 85, category: 'Programming' },
+                    'management': { confidence: 70, category: 'Leadership' },
+                    'team lead': { confidence: 75, category: 'Leadership' },
+                    'project management': { confidence: 80, category: 'Management' },
+                    'agile': { confidence: 70, category: 'Methodology' },
+                    'scrum': { confidence: 65, category: 'Methodology' }
+                };
+                
+                const detectedSkills = [];
+                const lowerInput = inputText.toLowerCase();
+                
+                for (const [skill, data] of Object.entries(skillKeywords)) {
+                    if (lowerInput.includes(skill)) {
+                        detectedSkills.push({
+                            name: this.capitalizeWords(skill),
+                            confidence: data.confidence + Math.random() * 20 - 10,
+                            category: data.category
+                        });
+                    }
+                }
+                
+                if (detectedSkills.length === 0) {
+                    detectedSkills.push(
+                        { name: 'Problem Solving', confidence: 85, category: 'Soft Skills' },
+                        { name: 'Communication', confidence: 80, category: 'Soft Skills' },
+                        { name: 'Teamwork', confidence: 75, category: 'Soft Skills' },
+                        { name: 'Time Management', confidence: 70, category: 'Soft Skills' }
+                    );
+                }
+                
+                return detectedSkills;
+            }
+
+            async matchJobs(skills) {
+                this.updateLoadingText('Finding perfect job matches...');
+                await this.delay(1500);
+                
+                const availableJobs = [
+                    {
+                        id: 1,
+                        title: 'Senior Frontend Developer',
+                        company: 'TechCorp Inc.',
+                        location: 'San Francisco, CA',
+                        type: 'Full-time',
+                        salary: '$120k - $160k',
+                        match: 92,
+                        description: 'Join our innovative team building next-generation web applications. We\'re looking for a skilled developer with strong React experience.',
+                        requiredSkills: ['React', 'JavaScript', 'TypeScript', 'CSS', 'Git'],
+                        remote: true
+                    },
+                    {
+                        id: 2,
+                        title: 'Full Stack Engineer',
+                        company: 'StartupXYZ',
+                        location: 'Austin, TX',
+                        type: 'Full-time',
+                        salary: '$100k - $140k',
+                        match: 88,
+                        description: 'Build scalable web applications from frontend to backend. Perfect opportunity to work with cutting-edge technologies.',
+                        requiredSkills: ['Node.js', 'React', 'SQL', 'AWS', 'Docker'],
+                        remote: false
+                    },
+                    {
+                        id: 3,
+                        title: 'JavaScript Developer',
+                        company: 'WebSolutions LLC',
+                        location: 'Remote',
+                        type: 'Contract',
+                        salary: '$80/hour',
+                        match: 85,
+                        description: 'Work on exciting client projects with flexible hours. Strong JavaScript skills required.',
+                        requiredSkills: ['JavaScript', 'API Development', 'Git', 'Problem Solving'],
+                        remote: true
+                    },
+                    {
+                        id: 4,
+                        title: 'Team Lead - Web Development',
+                        company: 'Enterprise Corp',
+                        location: 'New York, NY',
+                        type: 'Full-time',
+                        salary: '$140k - $180k',
+                        match: 79,
+                        description: 'Lead a team of talented developers while contributing to architecture decisions. Management experience preferred.',
+                        requiredSkills: ['Team Leadership', 'Project Management', 'Web Development', 'Agile'],
+                        remote: false
+                    }
+                ];
+                
+                return availableJobs.sort((a, b) => b.match - a.match).slice(0, 4);
+            }
+
+            displayResults(skills, jobs) {
+                this.hideLoading();
+                
+                document.getElementById('onboardingSection').style.display = 'none';
+                document.getElementById('resultsSection').style.display = 'block';
+                
+                this.displaySkills(skills);
+                this.displayJobs(jobs);
+                
+                document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+            }
+
+            displaySkills(skills) {
+                const skillsGrid = document.getElementById('skillsGrid');
+                skillsGrid.innerHTML = '';
+                
+                skills.forEach((skill, index) => {
+                    const skillElement = document.createElement('div');
+                    skillElement.className = 'skill-item';
+                    skillElement.innerHTML = `
+                        <div class="skill-name">${skill.name}</div>
+                        <div class="skill-confidence">${Math.round(skill.confidence)}% confidence</div>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 0%"></div>
+                        </div>
+                    `;
+                    skillsGrid.appendChild(skillElement);
+                    
+                    setTimeout(() => {
+                        const fill = skillElement.querySelector('.confidence-fill');
+                        fill.style.width = `${skill.confidence}%`;
+                    }, index * 100);
+                });
+            }
+
+            displayJobs(jobs) {
+                const jobsContainer = document.getElementById('jobsContainer');
+                jobsContainer.innerHTML = '';
+                
+                jobs.forEach(job => {
+                    const jobElement = document.createElement('div');
+                    jobElement.className = 'job-card';
+                    jobElement.innerHTML = `
+                        <div class="job-header">
+                            <div>
+                                <div class="job-title">${job.title}</div>
+                                <div class="job-company">${job.company}</div>
+                            </div>
+                            <div class="match-score">${job.match}% match</div>
+                        </div>
+                        <div class="job-details">
+                            <div class="job-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>${job.location}</span>
+                            </div>
+                            <div class="job-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>${job.type}</span>
+                            </div>
+                            <div class="job-detail">
+                                <i class="fas fa-dollar-sign"></i>
+                                <span>${job.salary}</span>
+                            </div>
+                            <div class="job-detail">
+                                <i class="fas fa-${job.remote ? 'home' : 'building'}"></i>
+                                <span>${job.remote ? 'Remote' : 'On-site'}</span>
+                            </div>
+                        </div>
+                        <div class="job-description">${job.description}</div>
+                        <div class="job-skills">
+                            ${job.requiredSkills.map(skill => `<span class="job-skill">${skill}</span>`).join('')}
+                        </div>
+                    `;
+                    
+                    jobElement.addEventListener('click', () => this.showJobDetails(job));
+                    jobsContainer.appendChild(jobElement);
+                });
+            }
+
+            showJobDetails(job) {
+                this.showToast(`Opening application for ${job.title} at ${job.company}`, 'info');
+            }
+
+            resetForm() {
+                document.getElementById('onboardingSection').style.display = 'block';
+                document.getElementById('resultsSection').style.display = 'none';
+                document.getElementById('skillsText').value = '';
+                document.getElementById('onboardingSection').scrollIntoView({ behavior: 'smooth' });
+            }
+
+            saveProfile() {
+                this.showToast('Profile saved successfully! You will receive job notifications.', 'success');
+            }
+
+            showLoading() {
+                document.getElementById('onboardingSection').style.display = 'none';
+                document.getElementById('loadingSection').style.display = 'block';
+            }
+
+            hideLoading() {
+                document.getElementById('loadingSection').style.display = 'none';
+            }
+
+            updateLoadingText(text) {
+                document.getElementById('loadingText').textContent = text;
+            }
+
+            generateDemoText() {
+                const demoTexts = [
+                    "I have 5 years of experience in web development with strong skills in JavaScript, React, and Node.js. I've worked on e-commerce platforms and have experience with database design and API development.",
+                    "I'm a full-stack developer with expertise in modern web technologies. I have experience with Python, SQL, and cloud services like AWS. I enjoy working in agile environments and have some team leadership experience.",
+                    "I specialize in frontend development with React and have worked on mobile-responsive applications. I also have experience with backend APIs, Git version control, and project management."
+                ];
+                return demoTexts[Math.floor(Math.random() * demoTexts.length)];
+            }
+
+            showToast(message, type = 'info') {
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${type}`;
+                toast.textContent = message;
+                
+                toast.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: ${type === 'success' ? '#00C896' : type === 'error' ? '#FF4757' : type === 'warning' ? '#FFB800' : '#FF6B35'};
+                    color: white;
+                    padding: 1rem 1.5rem;
+                    border-radius: 16px;
+                    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+                    z-index: 1000;
+                    transform: translateX(100%);
+                    transition: transform 0.3s ease;
+                    font-weight: 600;
+                    font-family: 'Space Grotesk', sans-serif;
+                `;
+                
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.transform = 'translateX(0)';
+                }, 10);
+                
+                setTimeout(() => {
+                    toast.style.transform = 'translateX(100%)';
+                    setTimeout(() => toast.remove(), 300);
+                }, 4000);
+            }
+
+            capitalizeWords(str) {
+                return str.split(' ').map(word => 
+                    word.charAt(0).toUpperCase() + word.slice(1)
+                ).join(' ');
+            }
+
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new SkillSyncApp();
+        });
+    </script>
+</body>
+</html>
