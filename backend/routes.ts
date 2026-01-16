@@ -19,10 +19,11 @@ export async function handleRequest(request: Request): Promise<Response> {
     }
   
     if (url.pathname === '/onboard-worker' && request.method === 'POST') {
-      const data = await request.json();
-      const skills = fakeInferSkills(data.text);
-      return new Response(JSON.stringify({ skills }), { status: 200 });
-    }
+        const data: { text: string } = await request.json(); // tell TS what to expect
+        const skills = fakeInferSkills(data.text);
+        return new Response(JSON.stringify({ skills }), { status: 200 });
+      }
+      
   
     if (url.pathname === '/match-jobs' && request.method === 'GET') {
       const workerId = url.searchParams.get('workerId');

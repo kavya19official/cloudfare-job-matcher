@@ -1,30 +1,61 @@
 {
   
   "name": "cloudfare-job-matcher",
+  
   "version": "1.0.0",
-  "type": "module",
-  "description": "AI-powered job matching platform for blue-collar and gig workers using voice-first, resume-free profiles. Skills are inferred from past work, tool usage, and audio/video inputs to auto-match workers with nearby jobs, prioritizing skills over certificates for inclusive hiring.",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kavya19official/cloudfare-job-matcher.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  
   "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/kavya19official/cloudfare-job-matcher/issues"
+  
+  "description": "AI-powered job matching platform for blue-collar and gig workers using voice-first, resume-free profiles. Skills are inferred from past work, tool usage, and audio/video inputs to auto-match workers with nearby jobs, prioritizing skills over certificates for inclusive hiring.",
+  
+  "main": "index.js",
+  
+  "directories": {
+  
+    
+  "doc": "docs"
+  
   },
+  
+  "scripts": {
+  
+    
+  "test": "echo \"Error: no test specified\" && exit 1"
+  
+  },
+  
+  "repository": {
+  
+    
+  "type": "git",
+  
+    
+  "url": "git+https://github.com/kavya19official/cloudfare-job-matcher.git"
+  
+  },
+  
+  "keywords": [],
+  
+  "author": "",
+  
+  "license": "ISC",
+  
+  "bugs": {
+  
+    
+  "url": "https://github.com/kavya19official/cloudfare-job-matcher/issues"
+  
+  },
+  
   "homepage": "https://github.com/kavya19official/cloudfare-job-matcher#readme",
+  
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260116.0",
-    "typescript": "^5.9.3"
+  
+    
+  "@cloudflare/workers-types": "^4.20260116.0",
+  
+    
+  "typescript": "^5.9.3"
+  
   }
 }

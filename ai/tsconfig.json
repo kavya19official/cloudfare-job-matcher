@@ -2,11 +2,15 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "NodeNext",
+
+    "lib": ["ES2020", "WebWorker"],
+
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+
     "types": ["@cloudflare/workers-types"]
   },
   "include": ["backend/**/*.ts", "ai/**/*.ts"]
