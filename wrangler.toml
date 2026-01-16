@@ -1,0 +1,9 @@
+name = "cloudfare-job-matcher"
+type = "javascript"          # or "typescript" if using TS
+account_id = "YOUR_ACCOUNT_ID"
+workers_dev = true
+compatibility_date = "2026-01-16"
+[[d1_databases]]
+binding = "DB"
+database_name = "job_matcher_db"
+database_id = "632d0c24-3065-40d9-afa9-0dabca4dc342"

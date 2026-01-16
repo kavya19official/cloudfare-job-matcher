@@ -251,7 +251,7 @@
   }, "jsonError");
   var middleware_miniflare3_json_error_default = jsonError;
 
-  // .wrangler/tmp/bundle-2eZkv2/middleware-insertion-facade.js
+  // .wrangler/tmp/bundle-U2q48e/middleware-insertion-facade.js
   __facade_registerInternal__([middleware_ensure_req_body_drained_default, middleware_miniflare3_json_error_default]);
 
   // backend/routes.ts
