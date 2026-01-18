@@ -1,0 +1,201 @@
+[
+  {
+    "id": "pm-scholarship",
+    "name": "Prime Minister Scholarship Scheme",
+    "rules": {
+      "student": true,
+      "income_below": 800000
+    },
+    "documents": [
+      "Aadhaar Card",
+      "Income Certificate",
+      "College ID Card"
+    ],
+    "apply_steps": [
+      "Open scholarships.gov.in",
+      "Register as a new user",
+      "Fill the application form",
+      "Upload required documents",
+      "Submit the application"
+    ]
+  },
+  {
+    "id": "ujwala-scheme",
+    "name": "Pradhan Mantri Ujjwala Yojana",
+    "rules": {
+      "income_below": 100000
+    },
+    "documents": [
+      "Aadhaar Card",
+      "Ration Card",
+      "Income Certificate"
+    ],
+    "apply_steps": [
+      "Visit the official Ujjwala scheme website",
+      "Fill the application form",
+      "Submit required documents",
+      "Receive LPG connection at home"
+    ]
+  },
+  {
+    "id": "pm-kisan",
+    "name": "Pradhan Mantri Kisan Samman Nidhi",
+    "rules": {
+      "farmer": true,
+      "land_ownership_proof": true
+    },
+    "documents": [
+      "Aadhaar Card",
+      "Land Ownership Document",
+      "Bank Account Details"
+    ],
+    "apply_steps": [
+      "Visit pmkisan.gov.in",
+      "Register as a farmer",
+      "Upload documents",
+      "Submit application",
+      "Receive benefits in bank account"
+    ]
+  },
+  {
+    "id": "ayushman-bharat",
+    "name": "Ayushman Bharat Pradhan Mantri Jan Arogya Yojana",
+    "rules": {
+      "income_below": 500000,
+      "family_size": 5
+    },
+    "documents": [
+      "Aadhaar Card",
+      "Income Certificate",
+      "Ration Card"
+    ],
+    "apply_steps": [
+      "Visit ayushmanbharat.gov.in",
+      "Register family details",
+      "Upload required documents",
+      "Get Ayushman card",
+      "Use card for health benefits"
+    ]
+  },
+  {
+    "id": "skill-india",
+    "name": "Pradhan Mantri Kaushal Vikas Yojana",
+    "rules": {
+      "age_between": [18, 35]
+    },
+    "documents": [
+      "Aadhaar Card",
+      "Educational Certificate",
+      "Passport Size Photograph"
+    ],
+    "apply_steps": [
+      "Visit skillindia.gov.in",
+      "Choose a training center",
+      "Fill application form",
+      "Attend training",
+      "Get certified"
+    ]
+  }
+  ,
+  {
+    "id": "mahila-samman-scheme",
+    "name": "Mahila Samman Savings Certificate Scheme",
+    "rules": {
+      "gender": "female",
+      "age_above": 18
+    },
+    "documents": [
+      "Aadhaar Card",
+      "Bank Passbook",
+      "Address Proof"
+    ],
+    "apply_steps": [
+      "Visit nearest post office or authorized bank",
+      "Fill the Mahila Samman Savings Certificate application form",
+      "Attach required documents",
+      "Submit form and deposit amount",
+      "Receive certificate"
+    ]
+  },
+  {
+    "id": "senior-citizen-savings",
+    "name": "Senior Citizens Savings Scheme (SCSS)",
+    "rules": {
+      "age_above": 60
+    },
+    "documents": [
+      "Aadhaar Card",
+      "PAN Card",
+      "Age Proof"
+    ],
+    "apply_steps": [
+      "Visit any post office or authorized bank",
+      "Fill SCSS application form",
+      "Attach age proof and other documents",
+      "Submit form and deposit amount",
+      "Account is opened"
+    ]
+  },
+  {
+    "id": "mudra-loan",
+    "name": "Pradhan Mantri Mudra Yojana (PMMY)",
+    "rules": {
+      "small_business_owner": true,
+      "loan_amount_upto": 1000000
+    },
+    "documents": [
+      "Aadhaar Card",
+      "Business Proof",
+      "Bank Account Statement"
+    ],
+    "apply_steps": [
+      "Visit nearest bank branch",
+      "Fill Mudra loan application form",
+      "Submit business documents",
+      "Bank reviews application",
+      "Loan is sanctioned and disbursed"
+    ]
+  },
+  {
+    "id": "national-scholarship",
+    "name": "National Scholarship Portal - Central Sector Scheme",
+    "rules": {
+      "student": true,
+      "score_above": 80,
+      "income_below": 800000
+    },
+    "documents": [
+      "Aadhaar Card",
+      "Marksheet",
+      "Income Certificate",
+      "Bank Passbook"
+    ],
+    "apply_steps": [
+      "Go to scholarships.gov.in",
+      "Register as a new student",
+      "Fill the scholarship application",
+      "Upload required documents",
+      "Submit application"
+    ]
+  },
+  {
+    "id": "antyodaya-anna-yojana",
+    "name": "Antyodaya Anna Yojana",
+    "rules": {
+      "low_income_family": true,
+      "income_below": 15000
+    },
+    "documents": [
+      "Ration Card",
+      "Income Certificate",
+      "Aadhaar Card"
+    ],
+    "apply_steps": [
+      "Visit local ration office",
+      "Fill Antyodaya Anna Yojana application form",
+      "Submit required documents",
+      "Get Antyodaya ration card",
+      "Avail subsidized food grains"
+    ]
+  }
+]
